@@ -1,0 +1,44 @@
+---
+- hosts: development_servers
+  roles:
+    - role: robertdebock.bootstrap
+  tasks:
+    - name: hosts file
+      lineinfile:
+        path: /etc/hosts
+        regexp: "^{{ item.ip }} "
+        line: "{{ item.ip }} {{ item.host }}"
+      with_items:
+        - ip: 172.31.0.1
+          host: controller.localdomain
+        - ip: 172.31.0.2
+          host: master.localdomain
+        - ip: 172.31.0.3
+          host: slave.localdomain
+
+    # Causes apt lock acquisition problems.
+    - name: stop apt-daily service
+      service:
+        name: "{{ item }}"
+        state: stopped
+      with_items:
+        - apt-daily.service
+        - apt-daily.timer
+
+    - name: disable apt-daily service
+      service:
+        name: "{{ item }}"
+        enabled: no
+      with_items:
+        - apt-daily.service
+        - apt-daily.timer
+
+    - name: update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 86400
+
+    # Some more dev env only related tasks...
+    # - name: install debconf utils
+    #   apt:
+    #     name: debconf-utils

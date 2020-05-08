@@ -1,0 +1,5 @@
+---
+- src: robertdebock.bootstrap
+
+- src: https://github.com/bertvv/ansible-role-bind
+  name: bertvv.bind

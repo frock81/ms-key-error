@@ -1,0 +1,8 @@
+.vagrant
+*.log
+*.retry
+.DS_Store
+*.vdi
+*.bak
+*vault*
+*pass*
