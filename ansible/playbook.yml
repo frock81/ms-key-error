@@ -3,5 +3,5 @@
   when: env == 'dev'
   tags: dev
 
-- import_playbook: playbook_common.yml
+- import_playbook: test.yml
   tags: common
